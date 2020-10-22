@@ -1,13 +1,121 @@
-﻿<Window x:Class="ChipTest.MainWindow"
+﻿<mah:MetroWindow  x:Class="ChipTest.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChipTest"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Height="29" Margin="254,127,0,0" VerticalAlignment="Top" Width="87"/>
+        Title="MainWindow" Height="750" Width="1200"
+        GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
+        ResizeMode="CanResizeWithGrip"
+        WindowStartupLocation="CenterScreen">
+
+    <mah:MetroWindow.LeftWindowCommands>
+        <mah:WindowCommands>
+            <Button Click="LaunchGitHubSite" ToolTip="Open up the GitHub site">
+                <iconPacks:PackIconModern Width="22"
+                                  Height="22"
+                                  Kind="SocialGithubOctocat" />
+            </Button>
+        </mah:WindowCommands>
+    </mah:MetroWindow.LeftWindowCommands>
+
+    <mah:MetroWindow.RightWindowCommands>
+        <mah:WindowCommands>
+            <Button Click="DeployCupCakes" Content="Deploy CupCakes">
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconModern Width="22"
+                                        Height="22"
+                                        VerticalAlignment="Center"
+                                        Kind="FoodCupcake" />
+                            <TextBlock Margin="4 0 0 0"
+                         VerticalAlignment="Center"
+                         Text="{Binding}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+            </Button>
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>
+
+    <Grid AutomationProperties.Name="grid1">
+        <!--Grid.RowDefinitions:将Grid分行-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="120*"/>
+            <RowDefinition Height="120*"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        <!--Grid.ColumnDefinitions:将Grid分列-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="200*"/>
+            <ColumnDefinition Width="10"/>
+
+        </Grid.ColumnDefinitions>
+        <!--Border:给需要显示的单元格画边框-->
+        <!--Grid.ColumnSpan:占据的列数； Grid.RowSpan：占据的行数；-->
+        <!--BorderThickness="1"，给BorderThickness只赋值一个值，这时候Border，上下左右边框的粗细都是1。
+                 如果不想显示哪一边，就把那一边粗细设置为0.如BorderThickness="0,0,1, 0"，这时候左、上、下都不会显示，只有右边才会显示。-->
+        <Border Grid.Row="2" Grid.Column="1" Grid.RowSpan="5" Grid.ColumnSpan="6" BorderBrush="Gray" BorderThickness="0,2,0,2"/>
+        <Border Grid.Row="3" Grid.Column="1" Grid.RowSpan="1" Grid.ColumnSpan="6" BorderBrush="Gray" BorderThickness="0,2,0,2"/>
+        <Border Grid.Row="5" Grid.Column="1" Grid.RowSpan="1" Grid.ColumnSpan="6" BorderBrush="Gray" BorderThickness="0,2,0,2"/>
+        
+        <!--表格中画斜线-->
+        <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="6" Text="通道一（触点不同配置下阻抗值）"  VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="DarkSeaGreen"/>
+        <Canvas Grid.Row="2" Grid.Column="1" Name="canvas1">
+            <Line Stroke="Gray" StrokeThickness="2" X1="0" Y1="0" X2="{Binding Path=ActualWidth,ElementName=canvas1}" Y2="{Binding Path=ActualHeight,ElementName=canvas1}"/>
+        </Canvas>
+        <Canvas Grid.Row="3" Grid.Column="2" Name="canvas2">
+            <Line Stroke="Red" StrokeThickness="2" X1="0" Y1="{Binding Path=ActualHeight,ElementName=canvas2}" X2="{Binding Path=ActualWidth,ElementName=canvas2}" Y2="0"/>
+        </Canvas>
+        <Canvas Grid.Row="4" Grid.Column="3" Name="canvas3">
+            <Line Stroke="Red" StrokeThickness="2" X1="0" Y1="{Binding Path=ActualHeight,ElementName=canvas3}" X2="{Binding Path=ActualWidth,ElementName=canvas3}" Y2="0"/>
+        </Canvas>
+        <Canvas Grid.Row="5" Grid.Column="4" Name="canvas4">
+            <Line Stroke="Red" StrokeThickness="2" X1="0" Y1="{Binding Path=ActualHeight,ElementName=canvas4}" X2="{Binding Path=ActualWidth,ElementName=canvas4}" Y2="0"/>
+        </Canvas>
+        <Canvas Grid.Row="6" Grid.Column="5" Name="canvas5">
+            <Line Stroke="Red" StrokeThickness="2" X1="0" Y1="{Binding Path=ActualHeight,ElementName=canvas5}" X2="{Binding Path=ActualWidth,ElementName=canvas5}" Y2="0"/>
+        </Canvas>
+
+        <!--表格首列斜线处加+-号-->
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="+" FontSize="20"/>
+        
+        <!--<TextBlock Grid.Row="1" Grid.Column="1" Text="第二行第二列"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="第三行第二列"/>
+
+        <TextBlock Grid.Row="0" Grid.Column="2" Text="第一行第三列"/>
+        <TextBlock Grid.Row="1" Grid.Column="2" Text="第二行第三列"/>
+        <TextBlock Grid.Row="2" Grid.Column="2" Text="第三行第三列"/>-->
+        <!--插入Textbox，同理可以插入botton-->
+        <!--<TextBox  Grid.Row="2" Grid.Column="2" Name="hangsu" VerticalAlignment="Top" BorderBrush="Chocolate" BorderThickness="0,0,1,0"  />-->
+
+
 
     </Grid>
-</Window>
+</mah:MetroWindow>
