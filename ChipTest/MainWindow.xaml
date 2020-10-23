@@ -8,14 +8,14 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        Title="MainWindow" Height="750" Width="1000"
+        Title="芯片测试软件" Height="750" Width="1100"
         GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
         ResizeMode="CanResizeWithGrip"
         WindowStartupLocation="CenterScreen">
 
     <mah:MetroWindow.LeftWindowCommands>
         <mah:WindowCommands>
-            <Button Click="LaunchGitHubSite">
+            <Button >
                 <iconPacks:PackIconModern Width="22"
                                   Height="22"
                                   Kind="SocialGithubOctocat" />
@@ -25,7 +25,7 @@
 
     <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands>
-            <Button Click="DeployCupCakes" Content="Deploy CupCakes">
+            <Button >
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -196,7 +196,8 @@
 
 
         <!--阻抗检测命令-->
-        <Button x:Name="impedanceTest" Content="          阻抗检测          " Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="13" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" FontWeight="Normal" FontFamily="Microsoft YaHei" Background="#FF18B6F1" Foreground="White"/>
+        <Button x:Name="impedanceTest" Content="          阻抗检测          " Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="13" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" FontWeight="Normal" FontFamily="Microsoft YaHei" Background="#FF18B6F1" Foreground="White" Click="impedance_Test"/>
+        
 
         <!--检测/刺激通道设置-->
         <TextBlock Grid.Row="1" Grid.Column="15" Grid.ColumnSpan="6" Text="检测/刺激通道设置"  VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Brown"/>
