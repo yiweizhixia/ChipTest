@@ -229,15 +229,15 @@
         <Button x:Name="button25" Content="OFF" Grid.Row="5" Grid.Column="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
         <!--单次刺激命令-->
-        <Button x:Name="singleStimulation" Content="单次刺激" Grid.Row="7" Grid.Column="15" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" FontWeight="Normal" FontFamily="Microsoft YaHei" Background="#FF18B6F1" Foreground="White"/>
+        <Button x:Name="singleStimulation" Click="single_Stimulate" Content="单次刺激" Grid.Row="7" Grid.Column="15" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" FontWeight="Normal" FontFamily="Microsoft YaHei" Background="#FF18B6F1" Foreground="White"/>
 
         <!--实时采样命令-->
-        <Button x:Name="realTimeSampleStart" Content="开始采样" Grid.Row="7" Grid.Column="17" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" FontWeight="Normal" FontFamily="Microsoft YaHei" Background="#FF18B6F1" Foreground="White"/>
-        <Button x:Name="realTimeSampleStop" Content="停止采样" Grid.Row="7" Grid.Column="19" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" FontWeight="Normal" FontFamily="Microsoft YaHei" Background="#FF18B6F1" Foreground="White"/>
+        <Button x:Name="realTimeSampleStart" Click="realTSample_Start" Content="开始采样" Grid.Row="7" Grid.Column="17" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" FontWeight="Normal" FontFamily="Microsoft YaHei" Background="#FF18B6F1" Foreground="White"/>
+        <Button x:Name="realTimeSampleStop" Click="realTSample_Stop" Content="停止采样" Grid.Row="7" Grid.Column="19" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" FontWeight="Normal" FontFamily="Microsoft YaHei" Background="#FF18B6F1" Foreground="White"/>
 
         <!--绘图-->
         <TextBlock Grid.Row="8" Grid.Column="0" Text="通道一" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-        <d3:ChartPlotter x:Name="plotter1" Margin="10,5,10,10" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="20">
+        <d3:ChartPlotter x:Name="plotter" Margin="10,5,10,10" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="20">
             <d3:HorizontalAxis>
                 <d3:HorizontalIntegerAxis/>
             </d3:HorizontalAxis>
@@ -248,7 +248,7 @@
         </d3:ChartPlotter>
 
         <TextBlock Grid.Row="9" Grid.Column="0" Text="通道二" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-        <d3:ChartPlotter x:Name="plotter2" Margin="10,5,10,10" Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="20">
+        <d3:ChartPlotter x:Name="plotter1" Margin="10,5,10,10" Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="20">
             <d3:HorizontalAxis>
                 <d3:HorizontalIntegerAxis/>
             </d3:HorizontalAxis>

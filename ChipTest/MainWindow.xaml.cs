@@ -15,6 +15,9 @@ using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 using System.IO.Ports;
 using System.Threading;
+using Microsoft.Research.DynamicDataDisplay.DataSources;
+using Microsoft.Research.DynamicDataDisplay;
+using System.Windows.Threading;
 
 namespace ChipTest
 {
@@ -29,7 +32,25 @@ namespace ChipTest
         public string com;
         List<byte> Receive_buf;         //存储从串口读取的数据
         Byte commandNum;                 //命令号
+        int result = 0;
+        int data1 = 0, data2=0;
+        int state = 1;
+        int re_length, re_comm;
+        int data_l, data_h;
+        string dataValue;
+        int group = 1000;  //界面内显示的点数
+        double ymax = 0, ymax1 = 0, ymin = 100000, ymin1 = 100000;
+        double xaxis = 0;  //界面x坐标值起点
+        int i = 0, flag = 0;
+        long k = 0;
+        List<int> al = new List<int>();
+        List<int> alStore = new List<int>();
 
+        private ObservableDataSource<Point> dataSource = new ObservableDataSource<Point>();
+        private ObservableDataSource<Point> dataSource1 = new ObservableDataSource<Point>();
+        private LineGraph graph = new LineGraph();
+        private LineGraph graph1 = new LineGraph();
+        private DispatcherTimer timer = new DispatcherTimer();
 
 
         public MainWindow()
@@ -64,7 +85,7 @@ namespace ChipTest
         {
             try
             {
-                //阻抗检测命令为14个字节
+                //阻抗检测命令
                 commandNum = 13;
                 byte[] impedComm = new byte[14];
                 impedComm[0] = 0x5A;                          //首字节
@@ -88,7 +109,6 @@ namespace ChipTest
 
                 //分析并显示数据
                 impedanceData_Show(Redata);
-                Receive_buf.Clear();
 
             }
             catch (Exception err)
@@ -103,7 +123,7 @@ namespace ChipTest
         {
             try
             {
-                //阻抗检测命令为14个字节
+                //单次刺激命令
                 commandNum = 9;
                 byte[] sinStidata = new byte[14];
                 sinStidata[0] = 0x5A;                          //首字节
@@ -131,7 +151,89 @@ namespace ChipTest
 
         }
 
-        //实时采样
+        //实时采样开始
+        private void realTSample_Start(object sender, RoutedEventArgs e)      //发出单次刺激
+        {
+            //清空画布
+            plotter.Children.Remove(graph);
+            plotter1.Children.Remove(graph1);
+            plotter.Legend.Remove();
+            plotter1.Legend.Remove();
+
+            //数据源与绘图数据关联
+            graph = plotter.AddLineGraph(dataSource, Colors.Green, 2);
+            graph1 = plotter.AddLineGraph(dataSource1, Colors.Green, 2);
+
+
+            try
+            {
+                //实时采样命令开始
+                commandNum = 12;
+                byte[] realTdata = new byte[14];
+                realTdata[0] = 0x5A;                          //首字节
+                realTdata[1] = 14;                           //命令数据长度
+                realTdata[2] = commandNum;
+                realTdata[3] = 1;
+                //和校验
+                for (int i = 1; i < 12; i++)
+                {
+                    realTdata[12] += realTdata[i];
+                }
+
+                realTdata[13] = 0xA5;                        //尾字节
+
+                //发送命令
+                myPort.Write(realTdata, 0, realTdata.Length);
+                Thread.Sleep(50);                                
+
+                //接收数据
+                timer.Tick += MyPort_sampleDataReceived;
+                timer.Interval = TimeSpan.FromMilliseconds(5);   //隔5ms采样一次
+                timer.IsEnabled = true;
+
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message);
+            }
+
+
+        }
+
+        //实时采样停止
+        private void realTSample_Stop(object sender, RoutedEventArgs e)
+        {
+
+            Thread.Sleep(10);
+            if (myPort.IsOpen)
+            {
+                //实时采样命令开始
+                commandNum = 12;
+                byte[] realTdata = new byte[14];
+                realTdata[0] = 0x5A;                          //首字节
+                realTdata[1] = 14;                           //命令数据长度
+                realTdata[2] = commandNum;
+                realTdata[3] = 0;
+                //和校验
+                for (int i = 1; i < 12; i++)
+                {
+                    realTdata[12] += realTdata[i];
+                }
+
+                realTdata[13] = 0xA5;                        //尾字节
+
+                myPort.Write(realTdata, 0, realTdata.Length);
+                myPort.Close();
+
+            }
+            else
+            {
+                myPort.Close();
+            }
+
+            timer.Stop();
+
+        }
 
 
         //-----------------------接收数据处理----------------------
@@ -167,6 +269,71 @@ namespace ChipTest
             
         }
 
+        //接收实时采样数据
+        private void MyPort_sampleDataReceived(object sender, EventArgs e)
+        {
+            if (!myPort.IsOpen)
+            {
+                return;
+            }
+
+            try
+            {
+                //读取44个字节
+                byte[] Redata = new byte[44];
+                myPort.Read(Redata, 0, 44);
+
+                //提取数据，并赋给数据源
+                Point point = new Point();
+                Point point1 = new Point();
+                for (i = 3; i < 22; i+=2)       //第3位到42位为采样数据,每次递增2
+                {
+                    data1 = (Redata[i] << 8) + Redata[i + 1];
+                    data2 = (Redata[i+20] << 8) + Redata[i + 21];
+
+                    point = new Point(k, data1);
+                    point1 = new Point(k, data2);
+                    dataSource.AppendAsync(base.Dispatcher, point);
+                    dataSource1.AppendAsync(base.Dispatcher, point1);
+                    k++;
+                }
+
+
+                if (k - group > 0)     //x轴移动
+                    {
+                        xaxis = k - group;
+                    }
+                    else
+                    {
+                        xaxis = 0;
+                    }
+
+                //X轴动态显示
+                plotter.Viewport.Visible = new System.Windows.Rect(xaxis, ymin - 0.2 * Math.Abs(ymax - ymin), group, 1.4 * (ymax - ymin));
+                plotter1.Viewport.Visible = new System.Windows.Rect(xaxis, ymin1 - 0.2 * Math.Abs(ymax1 - ymin1), group, 1.4 * (ymax1 - ymin1));
+
+                //删除数据源中1000个以前的历史数据
+                int m = dataSource.Collection.Count;
+
+                if (m / 1000 > 0)
+                {
+
+                   for (int ii = (m - 1000); ii >= 0; ii--)
+                   {
+                       dataSource.Collection.RemoveAt(ii);
+                       dataSource1.Collection.RemoveAt(ii);
+                    }
+
+                }
+               
+            }
+            catch (Exception err1)
+            {
+                MessageBox.Show(err1.Message);
+            }
+
+
+        }
 
         //------------------------界面显示---------------------------
         //在界面上显示阻抗检测的数值
