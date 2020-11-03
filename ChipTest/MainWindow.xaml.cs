@@ -254,6 +254,7 @@ namespace ChipTest
         }
 
 
+
         //-----------------------接收数据处理----------------------
         //接收数据并校验（同时清空Receive_buf）
         private void myPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
