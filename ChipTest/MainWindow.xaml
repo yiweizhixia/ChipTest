@@ -76,11 +76,11 @@
             <ColumnDefinition Width="20*"/>
             <ColumnDefinition Width="50*"/>
             <ColumnDefinition Width="30*"/>
-            <ColumnDefinition Width="20*"/>
-            <ColumnDefinition Width="20*"/>
-            <ColumnDefinition Width="20*"/>
-            <ColumnDefinition Width="20*"/>
-            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="30*"/>
+            <ColumnDefinition Width="30*"/>
+            <ColumnDefinition Width="30*"/>
+            <ColumnDefinition Width="30*"/>
+            <ColumnDefinition Width="30*"/>
             <ColumnDefinition Width="30*"/>
 
         </Grid.ColumnDefinitions>
@@ -203,7 +203,8 @@
         <TextBlock Grid.Row="1" Grid.Column="15" Grid.ColumnSpan="6" Text="检测/刺激通道设置"  VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Brown"/>
         <Border Grid.Row="2" Grid.Column="15" Grid.RowSpan="4" Grid.ColumnSpan="6" BorderBrush="Gray" BorderThickness="0,2,0,2"/>
         <Border Grid.Row="3" Grid.Column="16" Grid.RowSpan="1" Grid.ColumnSpan="5" BorderBrush="Gray" BorderThickness="0,2,0,0"/>
-        <Border Grid.Row="4" Grid.Column="15" Grid.RowSpan="1" Grid.ColumnSpan="6" BorderBrush="Gray" BorderThickness="0,2,0,2"/>
+        <Border Grid.Row="4" Grid.Column="20" BorderBrush="Gray" BorderThickness="0,2,0,0"/>
+        <Border Grid.Row="4" Grid.Column="15" Grid.RowSpan="1" Grid.ColumnSpan="5" BorderBrush="Gray" BorderThickness="0,2,0,2"/>
         <TextBlock Grid.Row="2" Grid.Column="15" Grid.RowSpan="2" Text="通道" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <TextBlock Grid.Row="4" Grid.Column="15" Text="通道一" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <TextBlock Grid.Row="5" Grid.Column="15" Text="通道二" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -216,18 +217,56 @@
         
 
         <!--电极通道选择-->
-        <Button x:Name="button11" Content="OFF" Grid.Row="4" Grid.Column="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Button x:Name="button12" Content="OFF" Grid.Row="4" Grid.Column="17" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Button x:Name="button13" Content="OFF" Grid.Row="4" Grid.Column="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Button x:Name="button14" Content="OFF" Grid.Row="4" Grid.Column="19" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Button x:Name="button15" Content="OFF" Grid.Row="4" Grid.Column="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <ComboBox Name="cbDetectLHip1" Grid.Row="4" Grid.Column="16" Width="55" Height="20">
+            <ComboBoxItem IsSelected="True">OFF</ComboBoxItem>
+            <ComboBoxItem>+</ComboBoxItem>
+            <ComboBoxItem>-</ComboBoxItem>
+        </ComboBox>
+        <ComboBox Name="cbDetectLHip2" Grid.Row="4" Grid.Column="17" Width="55" Height="20">
+            <ComboBoxItem IsSelected="True">OFF</ComboBoxItem>
+            <ComboBoxItem>+</ComboBoxItem>
+            <ComboBoxItem>-</ComboBoxItem>
+        </ComboBox>
+        <ComboBox Name="cbDetectLHip3" Grid.Row="4" Grid.Column="18" Width="55" Height="20">
+            <ComboBoxItem IsSelected="True">OFF</ComboBoxItem>
+            <ComboBoxItem>+</ComboBoxItem>
+            <ComboBoxItem>-</ComboBoxItem>
+        </ComboBox>
+        <ComboBox Name="cbDetectLHip4" Grid.Row="4" Grid.Column="19" Width="55" Height="20">
+            <ComboBoxItem IsSelected="True">OFF</ComboBoxItem>
+            <ComboBoxItem>+</ComboBoxItem>
+            <ComboBoxItem>-</ComboBoxItem>
+        </ComboBox>
 
-        <Button x:Name="button21" Content="OFF" Grid.Row="5" Grid.Column="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Button x:Name="button22" Content="OFF" Grid.Row="5" Grid.Column="17" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Button x:Name="button23" Content="OFF" Grid.Row="5" Grid.Column="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Button x:Name="button24" Content="OFF" Grid.Row="5" Grid.Column="19" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Button x:Name="button25" Content="OFF" Grid.Row="5" Grid.Column="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <ComboBox Name="cbDetectRHip1" Grid.Row="5" Grid.Column="16" Width="55" Height="20">
+            <ComboBoxItem IsSelected="True">OFF</ComboBoxItem>
+            <ComboBoxItem>+</ComboBoxItem>
+            <ComboBoxItem>-</ComboBoxItem>
+        </ComboBox>
+        <ComboBox Name="cbDetectRHip2" Grid.Row="5" Grid.Column="17" Width="55" Height="20">
+            <ComboBoxItem IsSelected="True">OFF</ComboBoxItem>
+            <ComboBoxItem>+</ComboBoxItem>
+            <ComboBoxItem>-</ComboBoxItem>
+        </ComboBox>
+        <ComboBox Name="cbDetectRHip3" Grid.Row="5" Grid.Column="18" Width="55" Height="20">
+            <ComboBoxItem IsSelected="True">OFF</ComboBoxItem>
+            <ComboBoxItem>+</ComboBoxItem>
+            <ComboBoxItem>-</ComboBoxItem>
+        </ComboBox>
+        <ComboBox Name="cbDetectRHip4" Grid.Row="5" Grid.Column="19" Width="55" Height="20">
+            <ComboBoxItem IsSelected="True">OFF</ComboBoxItem>
+            <ComboBoxItem>+</ComboBoxItem>
+            <ComboBoxItem>-</ComboBoxItem>
+        </ComboBox>
 
+        <ComboBox Name="cbDetectCan" Grid.Row="4" Grid.Column="20" Grid.RowSpan="2" Width="55" Height="20">
+            <ComboBoxItem IsSelected="True">OFF</ComboBoxItem>
+            <ComboBoxItem>+</ComboBoxItem>
+            <ComboBoxItem>-</ComboBoxItem>
+        </ComboBox>
+
+        <!--通道选择-->
+        <Button x:Name="channelSelect" Click="channel_Select" Content="通道选择" Grid.Row="7" Grid.Column="14" Grid.ColumnSpan="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" FontWeight="Normal" FontFamily="Microsoft YaHei" Background="#FF18B6F1" Foreground="White"/>
         <!--单次刺激命令-->
         <Button x:Name="singleStimulation" Click="single_Stimulate" Content="单次刺激" Grid.Row="7" Grid.Column="15" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" FontWeight="Normal" FontFamily="Microsoft YaHei" Background="#FF18B6F1" Foreground="White"/>
 

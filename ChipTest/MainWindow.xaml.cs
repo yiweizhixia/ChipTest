@@ -52,11 +52,15 @@ namespace ChipTest
         private LineGraph graph1 = new LineGraph();
         private DispatcherTimer timer = new DispatcherTimer();
 
+        Detection dete;
+
 
         public MainWindow()
         {
             InitializeComponent();
             myPortInitalize();            //串口初始化
+
+            dataBinding();    //控件绑定
         }
 
 
@@ -148,6 +152,20 @@ namespace ChipTest
                 MessageBox.Show(err.Message);
             }
 
+
+        }
+
+        private void channel_Select(object sender, RoutedEventArgs e)
+        {
+            //得到通道数据
+            byte[] channel_Data = Get_Channeldata();
+
+            //发送数据
+            myPort.Write(channel_Data, 0, channel_Data.Length);
+            Thread.Sleep(500);
+            
+            //校验
+            myPort.DataReceived += myPort_DataReceived;   //校验返回的结果
 
         }
 
@@ -300,15 +318,15 @@ namespace ChipTest
 
 
                 if (k - group > 0)     //x轴移动
-                    {
-                        xaxis = k - group;
-                    }
-                    else
-                    {
-                        xaxis = 0;
-                    }
+                {
+                    xaxis = k - group;
+                }
+                else
+                {
+                    xaxis = 0;
+                }
 
-                //X轴动态显示
+                //X轴动态显示，Y轴范围在全局变量定义中设置
                 plotter.Viewport.Visible = new System.Windows.Rect(xaxis, ymin - 0.2 * Math.Abs(ymax - ymin), group, 1.4 * (ymax - ymin));
                 plotter1.Viewport.Visible = new System.Windows.Rect(xaxis, ymin1 - 0.2 * Math.Abs(ymax1 - ymin1), group, 1.4 * (ymax1 - ymin1));
 
@@ -334,6 +352,44 @@ namespace ChipTest
 
 
         }
+
+
+
+        //-----------------------------数据打包----------------------------
+
+        //通道数据打包
+        private byte[] Get_Channeldata()
+        {
+            commandNum = 23;
+            byte[] channelData = new byte[14];
+
+            channelData[0] = 0x5A;                          //首字节
+            channelData[1] = 14;                           //命令数据长度
+            channelData[2] = commandNum;
+            channelData[3] = dete.DetectLHip1;
+            channelData[4] = dete.DetectLHip2;
+            channelData[5] = dete.DetectLHip3;
+            channelData[6] = dete.DetectLHip4;
+            channelData[7] = dete.DetectRHip1;
+            channelData[8] = dete.DetectRHip2;
+            channelData[9] = dete.DetectRHip3;
+            channelData[10] = dete.DetectRHip4;
+            channelData[11] = dete.DetectCan;
+
+            //和校验
+            for (int i = 1; i < 12; i++)
+            {
+                channelData[12] += channelData[i];
+            }
+
+            channelData[13] = 0xA5;                          //尾字节
+
+            return channelData;
+        }
+
+
+
+
 
         //------------------------界面显示---------------------------
         //在界面上显示阻抗检测的数值
@@ -385,7 +441,25 @@ namespace ChipTest
 
         }
 
+        //-----------------控件与数据绑定--------------------
+        private void dataBinding()
+        {
+           
+            //绑定检测参数
+            dete = new Detection();
+            this.cbDetectLHip1.SetBinding(ComboBox.SelectedIndexProperty, new Binding("DetectLHip1") { Source = dete });
+            this.cbDetectLHip2.SetBinding(ComboBox.SelectedIndexProperty, new Binding("DetectLHip2") { Source = dete });
+            this.cbDetectLHip3.SetBinding(ComboBox.SelectedIndexProperty, new Binding("DetectLHip3") { Source = dete });
+            this.cbDetectLHip4.SetBinding(ComboBox.SelectedIndexProperty, new Binding("DetectLHip4") { Source = dete });
+            this.cbDetectRHip1.SetBinding(ComboBox.SelectedIndexProperty, new Binding("DetectRHip1") { Source = dete });
+            this.cbDetectRHip2.SetBinding(ComboBox.SelectedIndexProperty, new Binding("DetectRHip2") { Source = dete });
+            this.cbDetectRHip3.SetBinding(ComboBox.SelectedIndexProperty, new Binding("DetectRHip3") { Source = dete });
+            this.cbDetectRHip4.SetBinding(ComboBox.SelectedIndexProperty, new Binding("DetectRHip4") { Source = dete });
 
+            this.cbDetectCan.SetBinding(ComboBox.SelectedIndexProperty, new Binding("DetectCan") { Source = dete });;
+
+
+        }
 
 
 
